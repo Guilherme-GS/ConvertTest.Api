@@ -25,7 +25,7 @@ namespace ConvertTest.Repositories
 
         public async Task<Call> LastContact(string document)
         {
-            var lastCall = await _Context.Calls.LastOrDefaultAsync(x => x.Document.Equals(document));
+            var lastCall = await _Context.Calls.OrderBy(x=>x.Date).LastOrDefaultAsync(x => x.Document.Equals(document));
 
             return lastCall;
         }
