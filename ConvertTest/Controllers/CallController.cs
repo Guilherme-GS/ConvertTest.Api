@@ -12,6 +12,7 @@ using ConvertTest.Helpers;
 using ConvertTest.Enums;
 using ConvertTest.ApiModels;
 using ConvertTest.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 
 namespace ConvertTest.Controllers
 {
@@ -20,9 +21,11 @@ namespace ConvertTest.Controllers
     public class CallController: ControllerBase
     {
         private readonly ICallservice _callService;
+        private readonly ILogger<CallController> _logger;
 
-        public CallController(ICallservice callService)
+        public CallController(ICallservice callService,ILogger<CallController> logger)
         {
+            _logger = logger;
             _callService = callService;
         }
 
@@ -40,11 +43,13 @@ namespace ConvertTest.Controllers
                 response.HasErrorDB = true;
                 response.Error = e.Message;
                 response.ErrorDB = e.Message;
+                _logger.LogError(e, "erro de banco de dados");
             }
             catch (Exception e)
             {
                 response.HasError = true;
                 response.Error = e.Message;
+                _logger.LogError(e, "erro desconhecido");
             }
 
 
@@ -74,11 +79,13 @@ namespace ConvertTest.Controllers
                 response.HasErrorDB = true;
                 response.Error = e.Message;
                 response.ErrorDB = e.Message;
+                _logger.LogError(e, "erro de banco de dados");
             }
             catch(Exception e)
             {
                 response.HasError = true;
                 response.Error = e.Message;
+                _logger.LogError(e, "erro desconhecido");
             }
 
             return Ok(response);
